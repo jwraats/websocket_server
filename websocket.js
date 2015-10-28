@@ -7,8 +7,12 @@ var server = ws.createServer(function (conn) {
     connections++;
     var id = connections;
     conn.on("text", function (str) {
-        orientatedSide[id] = str
-  	sendChange(); 
+        if(str == "getList"){
+		sendList(conn)
+	}else{
+		orientatedSide[id] = str
+  		sendChange();
+	} 
     });
 
     conn.on("close", function (code, reason) {
@@ -17,6 +21,11 @@ var server = ws.createServer(function (conn) {
 
 }).listen(1337)
 
+function sendList(conn){
+	orientatedSide.forEach(function(entry, i) {
+		conn.sendText("Connectie ["+i+"]: "+entry);
+	});
+}
 
 function sendChange(){
 	broadcast(server, "isGreen: '"+checkIfAllSame()+"'");
