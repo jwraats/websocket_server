@@ -16,7 +16,7 @@ var server = ws.createServer(function (conn) {
     });
 
     conn.on("close", function (code, reason) {
-       	orientatedSide[id] = null;
+       	delete orientatedSide[id];
     });
 
 }).listen(1337)
